@@ -1,33 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookCloud</title>
 
-    <meta charset="UTF-8">
+  <style>
 
-    <title>BookCloud</title>
+    body{
+      font-family: Arial;
+      padding: 30px;
+      background: #f4f4f4;
+    }
 
-    <link rel="stylesheet" href="style.css">
+    h1{
+      color: #333;
+    }
+
+    input{
+      padding: 10px;
+      width: 250px;
+    }
+
+    button{
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    li{
+      margin-top: 10px;
+      background: white;
+      padding: 10px;
+      list-style: none;
+      border-radius: 5px;
+    }
+
+  </style>
 
 </head>
-
 <body>
 
-    <h1>📚 BookCloud</h1>
+  <h1>📚 BookCloud</h1>
 
-    <input
-        type="text"
-        id="title"
-        placeholder="Nombre del libro"
-    >
+  <input type="text" id="titulo" placeholder="Nombre del libro">
 
-    <button onclick="addBook()">
-        Agregar Libro
-    </button>
+  <button onclick="agregarLibro()">
+    Agregar Libro
+  </button>
 
-    <ul id="bookList"></ul>
+  <ul id="listaLibros"></ul>
 
-    <script src="app.js"></script>
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // CONFIGURACIÓN FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBwTfOzv8NBmRAsH4tkIXB_8HFcGxLPQo",
+        authDomain: "bookcloud-9d3a2.firebaseapp.com",
+        projectId: "bookcloud-9d3a2",
+        storageBucket: "bookcloud-9d3a2.firebasestorage.app",
+        messagingSenderId: "1061480552189",
+        appId: "1:1061480552189:web:e426c1fe4b5db9fd6e1094",
+        measurementId: "G-CCCL32WC9N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+    const lista = document.getElementById("listaLibros");
+
+    async function cargarLibros() {
+
+      lista.innerHTML = "";
+
+      const querySnapshot = await getDocs(collection(db, "books"));
+
+      querySnapshot.forEach((doc) => {
+
+        const li = document.createElement("li");
+
+        li.textContent = doc.data().title;
+
+        lista.appendChild(li);
+
+      });
+
+    }
+
+    window.agregarLibro = async function () {
+
+      const input = document.getElementById("titulo");
+
+      if(input.value === "") return;
+
+      await addDoc(collection(db, "books"), {
+
+        title: input.value
+
+      });
+
+      input.value = "";
+
+      cargarLibros();
+
+    }
+
+    cargarLibros();
+
+  </script>
 
 </body>
 </html>

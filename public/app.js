@@ -1,6 +1,6 @@
 async function loadBooks() {
 
-    const response = await fetch("/books");
+    const response = await fetch("https://bookcloud-bvf1.onrender.com/books");
 
     const books = await response.json();
 
@@ -27,7 +27,7 @@ async function addBook() {
 
     const title = document.getElementById("title").value;
 
-    await fetch("/books", {
+    await fetch("https://bookcloud-bvf1.onrender.com/books", {
 
         method: "POST",
 
@@ -48,7 +48,7 @@ async function addBook() {
 
 async function deleteBook(id) {
 
-    await fetch(`/books/${id}`, {
+    await fetch(`https://bookcloud-bvf1.onrender.com/books/${id}`, {
         method: "DELETE"
     });
 
