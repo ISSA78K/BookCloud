@@ -1,6 +1,10 @@
+const API = "https://bookcloud-bvf1.onrender.com/books";
+
+
+// CARGAR LIBROS
 async function loadBooks() {
 
-    const response = await fetch("https://bookcloud-bvf1.onrender.com/books");
+    const response = await fetch(API);
 
     const books = await response.json();
 
@@ -23,11 +27,12 @@ async function loadBooks() {
 }
 
 
+// AGREGAR LIBRO
 async function addBook() {
 
     const title = document.getElementById("title").value;
 
-    await fetch("https://bookcloud-bvf1.onrender.com/books", {
+    await fetch(API, {
 
         method: "POST",
 
@@ -46,10 +51,13 @@ async function addBook() {
 }
 
 
+// ELIMINAR LIBRO
 async function deleteBook(id) {
 
     await fetch(`https://bookcloud-bvf1.onrender.com/books/${id}`, {
+
         method: "DELETE"
+
     });
 
     loadBooks();
