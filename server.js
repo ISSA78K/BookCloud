@@ -1,15 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
-
-const fs = require("fs");
-
-const serviceAccount = JSON.parse(
-  fs.readFileSync("./firebase-config.json", "utf8")
-);
+const serviceAccount = require("./firebase-config.json");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount)
 });
 
 const db = admin.firestore();
